@@ -74,7 +74,7 @@ print(nrow(M4heteroNheteroMnobottle))
 print(nrow(M5heteroNheteroMnobottle))
 print(nrow(M6heteroNheteroMnobottle))
 
-> ### Replace all "NaN" [!!! The number of lines of summary statistics need to be the same for the 4 models !!!]
+> ### Replace all "NaN" [!!! The number of lines of summary statistics need to be the same for the 6 models !!!]
 > for(i in 1:ncol(M1heteroNheteroMnobottle)){
   M1heteroNheteroMnobottle[which(M1heteroNheteroMnobottle[,i]=="NaN"),i]=mean(M1heteroNheteroMnobottle[,i], na.rm=T)
   M2heteroNheteroMnobottle[which(M2heteroNheteroMnobottle[,i]=="NaN"),i]=mean(M2heteroNheteroMnobottle[,i], na.rm=T)
