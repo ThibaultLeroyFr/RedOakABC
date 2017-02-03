@@ -1,5 +1,7 @@
 # RedOakABC
 This GitHub respository contains all datasets, scripts and programs used to reconstruct the demographic history of Quercus rubra using an approximate Bayesian computation framework (Merceron et al. 2017, in revision for Genome).
+For any questions, please contact : thibault.leroy_AT_inra.fr
+
 ### 1/ PROGRAMS
  
 - To compile mscalc, the calculator of summary statistics (Ross-Ibarra et al. 2008; 2009; Roux et al. 2011):
