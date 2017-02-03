@@ -16,9 +16,9 @@ For any questions, please contact : thibault.leroy_AT_inra.fr
 
 To have more details: priorgen4_recentbottle.py -h
 
-This generator is an extended version of the priorgen.py prior generator of Leroy et al. 2017 new phytologist (7 models: PAN, SI, AM, IM, SC, PAM, PSC;including possibity for models with homo/hetero Ne; homo/hetero Nm and recent bottlenecks*) (the previous version of the software is also available: https://github.com/ThibaultLeroyFr/WhiteOaksABC)
+This generator is an extended version of the priorgen.py prior generator of Leroy et al. 2017 new phytologist (7 models: PAN, SI, AM, IM, SC, PAM, PSC;including possibility for models with homo/hetero Ne; homo/hetero Nm and recent bottlenecks*) (the previous version of the software is also available: https://github.com/ThibaultLeroyFr/WhiteOaksABC)
 
-Note that this version also gives you the possibility to include an instantaneous change in population size but assumes that this change is recent. More precisely, bottlenecks are assumed to occur between the most recent inferred event and present [e.g. PSC = between the 2nd round of gene flow [Tsc2] and present, see fig.1 Merceron et al. 2017, in revision for Genome].  
+Note that this version also gives you the possibility to include an instantaneous change in population size but assumes that this change is recent. More precisely, bottlenecks are assumed to occur between the most recent inferred event and present [e.g. for PSC, between the 2nd round of gene flow [Tsc2] and present, see fig.1 Merceron et al. 2017, in revision for Genome].  
  
 ### 2/ DATASETS
  
