@@ -1,4 +1,6 @@
 # RedOakABC
+This GitHub respository contains all datasets, scripts and programs used to reconstruct the demographic history of Quercus rubra using an approximate Bayesian computation framework (Merceron et al. 2017, in revision for Genome).
+For any questions, please contact : thibault.leroy_AT_inra.fr
 
 ### 1/ PROGRAMS
  
@@ -14,9 +16,9 @@
 
 To have more details: priorgen4_recentbottle.py -h
 
-This generator is an extended version of the priorgen.py prior generator of Leroy et al. submitted (6 models: SI, AM, IM, SC, PAM, PSC; homo/hetero Ne; homo/hetero Nm; with or without recent bottlenecks*) (the Leroy et al. version of the software is also available: https://github.com/ThibaultLeroyFr/WhiteOaksABC)
+This generator is an extended version of the priorgen.py prior generator of Leroy et al. 2017 new phytologist (7 models: PAN, SI, AM, IM, SC, PAM, PSC;including possibity for models with homo/hetero Ne; homo/hetero Nm and recent bottlenecks*) (the previous version of the software is also available: https://github.com/ThibaultLeroyFr/WhiteOaksABC)
 
-Note that this version assumes recent bottlenecks. More precisely, bottlenecks are assumed to occur between the most recent event and present (i.e. posterior to the last secondary contact or ancient migration) .  
+Note that this version also gives you the possibility to include an instantaneous change in population size but assumes that this change is recent. More precisely, bottlenecks are assumed to occur between the most recent inferred event and present [e.g. PSC = between the 2nd round of gene flow [Tsc2] and present, see fig.1 Merceron et al. 2017, in revision for Genome].  
  
 ### 2/ DATASETS
  
@@ -27,7 +29,7 @@ The target file contains the 19 summary statistics calculated on each real datas
 ### 3/ EXAMPLE: Multilocus coalescent simulations:
  - Introduction
 
-25000 multilocus simulations assuming an AM scenario between cluster1 & cluster2 [i.e. number of SNPs (=68) x number of simulations (=25000) = 1,360,000]
+20000 multilocus simulations assuming an AM scenario between cluster1 & cluster2 [i.e. number of SNPs (=68) x number of simulations (=20000) = 1,360,000]
 
 Number of SNPs = 2nd line of the spinput.txt file
  - Bash script (note that here all programs are assumed to be in your bin directory):
@@ -57,17 +59,19 @@ here for each model, we assume : 200 directories containing an ABCstat.txt file 
 
 > ### Import each line of summary statistics corresponding to your simulations
 
-> M1heteroNheteroMnobottle=M2heteroNheteroMnobottle=M3heteroNheteroMnobottle=M4heteroNheteroMnobottle=M5heteroNheteroMnobottle=M6heteroNheteroMnobottle=NULL
+> M0heteroNnobottle=M1heteroNnobottle=M2heteroNheteroMnobottle=M3heteroNheteroMnobottle=M4heteroNheteroMnobottle=M5heteroNheteroMnobottle=M6heteroNheteroMnobottle=NULL
 
 > for(i in 1:200){
-  M1heteroNheteroMnobottle=rbind(M1heteroNheteroMnobottle, matrix(scan(paste("cluster1_cluster2_strictisolation_nobottleneck_Nhetero_Mhetero_v1_",i,"/ABCstat.txt", sep=""), skip=2), byrow=T, ncol=20)[,ss])
+  M0heteroNnobottle=rbind(M0heteroNnobottle, matrix(scan(paste("K2natives_cluster1_cluster2_panmixia_Nhomo_v1_",i,"/ABCstat.txt", sep=""), skip=2), byrow=T, ncol=20)[,ss])
+  M1heteroNnobottle=rbind(M1heteroNnobottle, matrix(scan(paste("cluster1_cluster2_strictisolation_nobottleneck_Nhetero_Mhetero_v1_",i,"/ABCstat.txt", sep=""), skip=2), byrow=T, ncol=20)[,ss])
   M2heteroNheteroMnobottle=rbind(M2heteroNheteroMnobottle, matrix(scan(paste("cluster1_cluster2_ancientmig_nobottleneck_Nhetero_Mhetero_v1_",i,"/ABCstat.txt", sep=""), skip=2), byrow=T, ncol=20)[,ss])
   M3heteroNheteroMnobottle=rbind(M3heteroNheteroMnobottle, matrix(scan(paste("cluster1_cluster2_island_nobottleneck_Nhetero_Mhetero_v1_",i,"/ABCstat.txt", sep=""), skip=2), byrow=T, ncol=20)[,ss])
   M4heteroNheteroMnobottle=rbind(M4heteroNheteroMnobottle, matrix(scan(paste("cluster1_cluster2_2ndarycont_nobottleneck_Nhetero_Mhetero_v1_",i,"/ABCstat.txt", sep=""), skip=2), byrow=T, ncol=20)[,ss])
   M5heteroNheteroMnobottle=rbind(M5heteroNheteroMnobottle, matrix(scan(paste("cluster1_cluster2_multiancientmig_nobottleneck_Nhetero_Mhetero_v1_",i,"/ABCstat.txt", sep=""), skip=2), byrow=T, ncol=20)[,ss])
   M6heteroNheteroMnobottle=rbind(M6heteroNheteroMnobottle, matrix(scan(paste("cluster1_cluster2_multi2ndarycont_nobottleneck_Nhetero_Mhetero_v1_",i,"/ABCstat.txt", sep=""), skip=2), byrow=T, ncol=20)[,ss])
 }
-print(nrow(M1heteroNheteroMnobottle))
+print(nrow(M0heteroNnobottle))
+print(nrow(M1heteroNnobottle))
 print(nrow(M2heteroNheteroMnobottle))
 print(nrow(M3heteroNheteroMnobottle))
 print(nrow(M4heteroNheteroMnobottle))
@@ -75,8 +79,9 @@ print(nrow(M5heteroNheteroMnobottle))
 print(nrow(M6heteroNheteroMnobottle))
 
 > ### Replace all "NaN" [!!! The number of lines of summary statistics need to be the same for the 6 models !!!]
-> for(i in 1:ncol(M1heteroNheteroMnobottle)){
-  M1heteroNheteroMnobottle[which(M1heteroNheteroMnobottle[,i]=="NaN"),i]=mean(M1heteroNheteroMnobottle[,i], na.rm=T)
+> for(i in 1:ncol(M1heteroNnobottle)){
+  M0heteroNnobottle[which(M0heteroNnobottle[,i]=="NaN"),i]=mean(M0heteroNnobottle[,i], na.rm=T)
+  M1heteroNnobottle[which(M1heteroNnobottle[,i]=="NaN"),i]=mean(M1heteroNnobottle[,i], na.rm=T)
   M2heteroNheteroMnobottle[which(M2heteroNheteroMnobottle[,i]=="NaN"),i]=mean(M2heteroNheteroMnobottle[,i], na.rm=T)
   M3heteroNheteroMnobottle[which(M3heteroNheteroMnobottle[,i]=="NaN"),i]=mean(M3heteroNheteroMnobottle[,i], na.rm=T)
   M4heteroNheteroMnobottle[which(M4heteroNheteroMnobottle[,i]=="NaN"),i]=mean(M4heteroNheteroMnobottle[,i], na.rm=T)
@@ -92,13 +97,13 @@ print(nrow(M6heteroNheteroMnobottle))
 
 > ### Generate a long vector of numbers from the simulations (1=model1, 2=model2..., 4=model4), used as the dependent variable for the regression
 
-> x=c(rep(1:6, each=nrow(M1heteroNheteroMnobottle)))
+> x=c(rep(1:7 each=nrow(M1heteroNnobottle)))
 
 > print(summary(x))
 
 > ### Perform your ABC analysis [note that tol is the most important paramters = required proportion of points nearest the target values (here 30,000/24,000,000 = 0,00125 best simulations)
 
-> res=model_selection_abc_nnet(target=obs, x=x, sumstat=rbind(M1heteroNheteroMnobottle,M2heteroNheteroMnobottle,M3heteroNheteroMnobottle,M4heteroNheteroMnobottle,M5heteroNheteroMnobottle,M6heteroNheteroMnobottle), tol=30000/(6*nrow(M1heteroNheteroMnobottle)), noweight=F, rejmethod=F, nb.nnet=20, size.nnet=8, output="OBS_introduite_SI-AM-CM-SC-PAM-PSC_nobottleneck_heteroM_10ABC_tol30000_190616")
+> res=model_selection_abc_nnet(target=obs, x=x, sumstat=rbind(M0heteroNnobottle,M1heteroNnobottle,M2heteroNheteroMnobottle,M3heteroNheteroMnobottle,M4heteroNheteroMnobottle,M5heteroNheteroMnobottle,M6heteroNheteroMnobottle), tol=35000/(7*nrow(M1heteroNnobottle)), noweight=F, rejmethod=F, nb.nnet=20, size.nnet=8, output="OBS_introduite_PAN-SI-AM-CM-SC-PAM-PSC_nobottleneck_heteroM_10ABC_tol35000_190616")
 
 ### 5/ EXAMPLE: generate posterior distribution under the best model (Rscript):
 
